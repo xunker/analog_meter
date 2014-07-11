@@ -58,11 +58,12 @@ ser.write("%s,%s\n" % (value, transition_time))
 # transition_time milliseconds if there is no transition going on.
 response_wait_time = 1
 if transition_time > 0:
-  response_wait_time = int(math.ceil((float(transition_time) / 1000.0)))+1
+  response_wait_time = int(math.ceil((float(transition_time) / 1000.0)))
 
 command_sent = int(time.time())
 last_response = ""
-while (not last_response) and (int(time.time()) < (command_sent + response_wait_time)):
+# response_wait_time+1 is to give room for latency.
+while (not last_response) and (int(time.time()) < (command_sent + response_wait_time+1)):
   for response in iter(ser.readline, ""):
     response.strip()
     if len(response) > 0:
