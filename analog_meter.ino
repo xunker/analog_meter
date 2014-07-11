@@ -1,3 +1,77 @@
+/*
+  Control an analog meter/gauge using a serial port.
+
+  Connect a PWM-controllable analog meter (most analog meters are) to the
+  METER_PIN pin (remember to connect the appropriate resistors!) and then
+  send serial command to move the needle where you want.
+
+
+  Required setup procedure:
+
+  Connect your meter's positive input to the METER_PIN pin (default is 3) along
+  with the correct resistors. Connect the meter's ground pin to the *duino
+  ground.
+
+
+  Quick start:
+
+  Use the included "gauge.py" to send commands.
+
+
+  Less-quick start:
+
+  Using your serial terminal program, make serial connection to the *duino at
+  9600-8-n-1, cts/rts on, dtr/dsr on and xon/xoff off.  Type "100" followed
+  by enter/return. The needle should move quickly to fully on you should see:
+
+    "ACK. Position: 100, transitionTime: 0, PWM: 255"
+
+  Next, type "0,9999" followed by enter/return. The needle should move slowly
+  down to the fully off state in about 10 seconds. After the needle has
+  finished moving you should see.
+
+    "ACK. Position: 0, transitionTime: 9999, PWM: 0"
+
+
+  Command syntax:
+
+  The commands are a comma-delimited string ended with a newline (unix or
+  MS-DOS). The serial connection speed is set at 9600. Possible commands look
+  like this:
+
+    "<position>\n"
+    "<position>\r\n"
+    "<position>,<time>\n"
+    "<position>,<time>\r\n"
+
+  <position> is a value of 0 to 100. 0 is fully off, 100 is fully on.
+
+  <time>, optional, is how long the change should take, 0-9999 milliseconds.
+  If not included it will default to "0" (zero) which means the needle moves
+  as fast as possible. If you were to send "100,9999" it means the needle would
+  move from the current position to fully on in 9999ms (~10 seconds). This is
+  useful if you know how quickly you will be sending updates so you can have
+  smooth transitions between needle position.
+
+  Note, if <time> is specified, the "ACK" message won't be sent until the
+  movement is complete which could take up to 10 secodnds. If the command
+  requires no needle movement (you asked the needle to move to position 50 and
+  it was already at that position), the ACK will be sent immediately without
+  waiting for <time> to pass.
+
+
+  Response syntax:
+
+  A successful command will always return a message that looks like this:
+
+    "ACK. Position: <number>, transitionTime: <number>, PWM: <number>"
+
+  Position indicates the current position, 0-100, of the needle.
+  transitionTime indicates how the transition was requested to take.
+  PWM is analogWrite() value used to position the needle at Position.
+
+*/
+
 #define METER_PIN     3 // This pin connects to the positive input of the gauge.
                         // Remember to add the right resistors inline!
 
