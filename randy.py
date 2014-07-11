@@ -2,6 +2,7 @@
 import serial
 import random
 import time
+import sys
 
 def usage():
   msg = "\n".join([
