@@ -6,6 +6,8 @@ import sys
 
 def usage():
   msg = "\n".join([
+    'Moves the meter need around randomly.'
+    ''
     'Usage: %s <device>' % sys.argv[0],
     '',
     " device:  the *duino serial port",
