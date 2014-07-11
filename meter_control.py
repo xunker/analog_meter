@@ -21,7 +21,7 @@ def usage():
   msg = "\n".join([
     'Usage: %s <device> <position> (<time>)' % sys.argv[0],
     '',
-    " device:  the *duino serial port',
+    " device:  the *duino serial port",
     "          Ex: COM3 (Windows) or /dev/tty.usbserial-AM01QKUP (Unix, Mac)",
     " positon: the needle position betweeen 0 and 100",
     " time:    (optional) time to move the needle, 0-9999 milliseconds, default 0",
